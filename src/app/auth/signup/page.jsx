@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from "next/link";
 
 const Signup = () => {
   return (
@@ -20,8 +21,8 @@ const Signup = () => {
           <input type="email"  className='w-full px-3 py-2 rounded bg-[#fff] text-[#000] text-sm focus:outline-none focus:ring-2 focus:ring-[#911D21]' placeholder='Enter Email'/>
         </div>
         <div className='mb-4'>
-          <label htmlFor="age" className='block mb-1'>Email</label>
-          <input type="number" className='w-full px-3 py-2 rounded bg-[#fff] text-[#000] text-sm focus:outline-none focus:ring-2 focus:ring-[#911D21]' placeholder='Enter Email'/>
+          <label htmlFor="age" className='block mb-1'>Age</label>
+          <input type="number" className='w-full px-3 py-2 rounded bg-[#fff] text-[#000] text-sm focus:outline-none focus:ring-2 focus:ring-[#911D21]' placeholder='Enter Age'/>
         </div>
         <div className='mb-4'>
           <label htmlFor="password" className='block mb-1'>Password</label>
@@ -29,7 +30,7 @@ const Signup = () => {
         </div>
         <button className='w-full py-2 rounded-full bg-[#000] text-[#fff] hover:bg-[#B9272F] focus:outline-none focus:ring-2 focus:ring-[#911D21] mb-4'>Submit</button>
         <div className='text-center text-sm mt-2'>
-          <a href="/signin" className="text-[#fff] hover:underline">Login</a>
+          <Link href="signin" className="text-[#fff] hover:underline">Login</Link>
         </div>
       </div>
     </div>
