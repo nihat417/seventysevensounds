@@ -13,12 +13,39 @@ export const login = createAsyncThunk(
       });
       const data = await response.json();
       console.log(data);
+      console.log(!data.flag);
+      if (!data.flag) { 
+        throw new Error(data.message);
+      }
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
   }
 );
+
+export const register = createAsyncThunk(
+  'auth/register',
+  async(userData,thunkAPI) =>{
+    try{
+      const response = await fetch("https://localhost:7202/api/auth/Register",{
+      method :'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+    const data = await response.json();
+    console.log(data);
+    if (!data.flag) { 
+      throw new Error(data.message);
+    }
+    }
+    catch(error){
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
+  }
+)
 
 const authSlice = createSlice({
   name: 'auth',
@@ -41,7 +68,11 @@ const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
+        state.user = null;
         state.error = action.payload.error;
+        if (action.payload.status === 400 && action.payload.title) {
+          state.error.title = action.payload.title;
+        }
       });
   },
 });

@@ -1,24 +1,37 @@
 "use client"
 import React, { useState } from 'react';
+import { FaEyeSlash,FaEye } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
-import { login } from '../../../lib/redux/slices/authSlice'; 
+import { useDispatch, useSelector } from 'react-redux';
+import { login, selectError } from '../../../lib/redux/slices/authSlice'; 
 
 const Signin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const error = useSelector(selectError);
   const dispatch = useDispatch();
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!email || !password) {
+      setFormSubmitted(true);
+      console.error('Email and password are required.');
+      return;
+    }
     try {
       const userData = { email, password };
-      await dispatch(login(userData));
-      router.push('/');
+      const actionResult = await dispatch(login(userData));
+      if (login.fulfilled.match(actionResult)) {
+        router.push('/');
+      } else {
+        //console.error('Login failed:', actionResult.error);
+      }
     } catch (error) {
-      console.error('Ошибка входа:', error);
+      console.error('Login error:', error);
     }
   };
 
@@ -35,10 +48,19 @@ const Signin = () => {
           </div>
           <div className='mb-4'>
             <label htmlFor="password" className='block mb-1'>Password</label>
-            <input type="password" id="password" className='w-full px-3 py-2 rounded bg-[#fff] text-[#000] text-sm focus:outline-none focus:ring-2 focus:ring-[#911D21]' placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)}/>
+            <div className="relative">
+              <input type={showPassword ? 'text' : 'password'} id="password" className='w-full px-3 py-2 rounded bg-[#fff] text-[#000] text-sm focus:outline-none focus:ring-2 focus:ring-[#911D21]' placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)}/>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer" onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? <FaEyeSlash className='h-5 w-5 text-black' /> : <FaEye className='h-5 w-5 text-black' />}
+              </div>
+            </div>
             <div className='mb-4 text-xs mt-[5px]'>
               <a href="#" className="text-[#fff] hover:underline">Forgot Password?</a>
             </div>
+          </div>
+          <div className='mb-4'>
+            {error && <span className="text-red-500">{error}</span>}
+            {formSubmitted && <span className="text-red-500">Email and password are required.</span>}
           </div>
           <button type="submit" className='w-full py-2 rounded-full bg-[#000] text-[#fff] hover:bg-[#B9272F] focus:outline-none focus:ring-2 focus:ring-[#911D21] mb-4'>Submit</button>
         </form>
