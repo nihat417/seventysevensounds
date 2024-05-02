@@ -2,7 +2,7 @@ import { login } from "../redux/slices/authSlice";
 
 export  const tokenMiddleware = (store) => (next) => (action) => {
     if (action.type === login.fulfilled.type) {
-        const token = action.payload.token;
+        const token = action.payload.accsesToken;
         document.cookie = `token=${token}; path=/;`;
         console.log('Token succsesfuly saved in cookie');
     } else if (action.type === 'auth/logout') {

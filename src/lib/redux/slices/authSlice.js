@@ -4,7 +4,7 @@ export const login = createAsyncThunk(
   'auth/login',
   async (userData, thunkAPI) => {
     try {
-      const response = await fetch('https://localhost:7202/api/auth/Login', {
+      const response = await fetch('https://musicappexample.azurewebsites.net/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ export const register = createAsyncThunk(
   'auth/register',
   async(userData,thunkAPI) =>{
     try{
-      const response = await fetch("https://localhost:7202/api/auth/Register",{
+      const response = await fetch("https://musicappexample.azurewebsites.net/api/auth/register",{
       method :'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -37,9 +37,8 @@ export const register = createAsyncThunk(
     });
     const data = await response.json();
     console.log(data);
-    if (!data.flag) { 
-      throw new Error(data.message);
-    }
+    if (!data.flag) 
+      throw new Error(data.title);
     }
     catch(error){
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -67,6 +66,22 @@ const authSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
+        state.loading = false;
+        state.user = null;
+        state.error = action.payload.error;
+        if (action.payload.status === 400 && action.payload.title) {
+          state.error.title = action.payload.title;
+        }
+      })
+      .addCase(register.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(register.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(register.rejected, (state, action) => {
         state.loading = false;
         state.user = null;
         state.error = action.payload.error;

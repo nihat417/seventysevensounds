@@ -1,6 +1,6 @@
 "use client"
-import React, { useState } from 'react';
-import { FaEyeSlash,FaEye } from "react-icons/fa";
+import React, { useState, useEffect } from 'react';
+import { FaEyeSlash, FaEye } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,9 +11,17 @@ const Signin = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(null);
+
   const error = useSelector(selectError);
   const dispatch = useDispatch();
   const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setWindowWidth(window.innerWidth);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,9 +43,11 @@ const Signin = () => {
     }
   };
 
+  const bgStyle = windowWidth <= 500 ? { backgroundColor: 'rgb(73,15,17)' } : { backgroundColor: '#000' };
+
   return (
-    <div className="flex min-h-screen justify-center items-center bg-[#000] text-[#fff]">
-      <div className='p-8 rounded-lg max-w-md w-full' style={{ backgroundColor: 'rgba(145, 29, 33, 0.5)' }}>
+    <div className={`flex min-h-screen justify-center items-center text-[#fff]`} style={bgStyle}>
+      <div className='p-8 rounded-lg max-w-md w-full' style={{ backgroundColor: 'rgb(73,15,17)' }}>
         <div className="mb-4 border-b border-[#fff] pb-2">
           <h1 className='text-center mb-4 text-lg' style={{ letterSpacing: '0.1em' }}>L o g i n</h1>
         </div>
