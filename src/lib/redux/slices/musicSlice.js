@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-export const fetchAllMusics = createAsyncThunk(
-  'music/fetchAll',
-  async (_, thunkAPI) => {
+export const fetchAllMusics = createAsyncThunk('music/fetchAll',async (_, thunkAPI) => {
     try {
       const response = await fetch('https://musicappexample.azurewebsites.net/api/music/allmusics');
       const data = await response.json();
@@ -31,7 +29,8 @@ const musicSlice = createSlice({
       })
       .addCase(fetchAllMusics.fulfilled, (state, action) => {
         state.loading = false;
-        state.allMusics = action.payload;
+        state.allMusics = action.payload.$values;
+        console.log(action.payload)
       })
       .addCase(fetchAllMusics.rejected, (state, action) => {
         state.loading = false;

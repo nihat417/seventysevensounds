@@ -1,14 +1,16 @@
 "use client"
-import {React,useEffect,useState} from "react";
-import style from "../lib/css/style.css"
+import React, { useEffect } from "react";
 import { useRouter } from 'next/navigation';
-import { getTokenMiddleware } from "@/lib/middlewares/getTokenMiddleware";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllMusics, selectAllMusics, selectMusicLoading, selectMusicError } from "@/lib/redux/slices/musicSlice";
+import { getTokenMiddleware } from "@/lib/middlewares/getTokenMiddleware";
 
 export default function Home() {
   const router = useRouter();
-  const [allMusics, setAllMusics] = useState([]);
+  const dispatch = useDispatch();
+  const allMusics = useSelector(selectAllMusics);
+  const isLoading = useSelector(selectMusicLoading);
+  const error = useSelector(selectMusicError);
 
   useEffect(() => {
     const fetchMusicData = async () => {
@@ -18,12 +20,8 @@ export default function Home() {
           router.push('/auth/signin');
           return;
         }
-
-        const response = await fetch('https://musicappexample.azurewebsites.net/api/music/allmusics');
-        const data = await response.json();
-        if (data && data.$values) {
-          setAllMusics(data.$values);
-        }
+        console.log(allMusics);
+        dispatch(fetchAllMusics());
       } catch (error) {
         console.error('Error fetching music data:', error);
       }
@@ -31,6 +29,14 @@ export default function Home() {
 
     fetchMusicData();
   }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24" style={{ backgroundColor: 'rgb(73,15,17)' }}>
