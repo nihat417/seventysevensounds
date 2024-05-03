@@ -21,7 +21,7 @@ const HeaderNav = () => {
   }, [router.pathname]);
 
   return isMenuVisible ? (
-    <nav id="mynav" className={`bg-white border-gray-200 dark:bg-gray-900`}>
+    <nav id="mynav" className={`bg-white border-red-900 dark:bg-gray-900`}>
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a className="flex items-center space-x-3 rtl:space-x-reverse">
           <img src="#" className="h-8" alt="Logo" />
