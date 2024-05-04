@@ -1,26 +1,9 @@
 "use client"
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { getTokenMiddleware } from '@/lib/middlewares/getTokenMiddleware';
+import React from 'react';
 
 const HeaderNav = () => {
-  const router = useRouter();
-  const [isMenuVisible, setMenuVisible] = useState(true);
 
-  useEffect(() => {
-    const checkTokenValidity = async () => {
-      if (router.pathname === '/auth/signin') {
-        setMenuVisible(false);
-      } else {
-        const tokenValid = await getTokenMiddleware();
-        setMenuVisible(tokenValid);
-      }
-    };
-
-    checkTokenValidity();
-  }, [router.pathname]);
-
-  return isMenuVisible ? (
+  return  (
     <nav id="mynav" className={`bg-white border-red-900 dark:bg-gray-900`}>
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a className="flex items-center space-x-3 rtl:space-x-reverse">
@@ -54,7 +37,7 @@ const HeaderNav = () => {
         </div>
       </div>
     </nav>
-  ) : null;
+  )
 };
 
 export default HeaderNav;
