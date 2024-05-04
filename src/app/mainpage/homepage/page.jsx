@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect  } from "react";
-import MusicCard from "@/lib/components/musicCard/MusicCard";
+import MusicCard from "@/app/components/musicCard/MusicCard";
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllMusics, selectAllMusics, selectMusicLoading, selectMusicError } from "@/lib/redux/slices/musicSlice";
@@ -40,15 +40,15 @@ const homepage = () => {
     }
   
     return (
-      <main className="flex min-h-screen flex-col items-center justify-between p-24  dark:bg-gray-900">
-        <div className="flex flex-col w-fit mx-auto">
-          <div className="product-card grid grid-cols-1 md:grid-cols-3 gap-10 py-12 lg:pb-8 lg:pt-10">
+        <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-24 dark:bg-gray-900">
+        <div className="flex flex-col w-full max-w-screen-lg mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10 py-6 md:py-12 lg:pb-8 lg:pt-10">
             {allMusics.map((music) => (
               <MusicCard key={music.trackId} music={music} />
             ))}
           </div>
         </div>
-      </main>
+      </main>      
     );
   };
 

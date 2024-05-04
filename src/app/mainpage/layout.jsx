@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import HeaderNav from '@/lib/components/Header/HeaderNav';
+import HeaderNav from '../components/Header/HeaderNav';
 import Providers from "../../lib/redux/provider/provider";
 
 const layout = ({children}) => {
