@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect  } from "react";
 import MusicCard from "@/app/components/musicCard/MusicCard";
+import Musicfooter from "@/app/components/musicfooter/musicfooter";
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllMusics, selectAllMusics, selectMusicLoading, selectMusicError } from "@/lib/redux/slices/musicSlice";
@@ -13,6 +14,8 @@ const homepage = () => {
     const isLoading = useSelector(selectMusicLoading);
     const error = useSelector(selectMusicError);
   
+    
+
     useEffect(() => {
       const fetchMusicData = async () => {
         try {
@@ -48,6 +51,7 @@ const homepage = () => {
             ))}
           </div>
         </div>
+        <Musicfooter/>
       </main>      
     );
   };
