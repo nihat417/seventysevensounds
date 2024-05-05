@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect  } from "react";
+import React, { useEffect, useState } from "react";
 import MusicCard from "@/app/components/musicCard/MusicCard";
 import Musicfooter from "@/app/components/musicfooter/musicfooter";
 import { useRouter } from 'next/navigation';
@@ -14,6 +14,11 @@ const homepage = () => {
     const isLoading = useSelector(selectMusicLoading);
     const error = useSelector(selectMusicError);
   
+    const [selectMusicName, setSelectMusicName] = useState("");
+
+    const handleMusic = (name)=>{
+      setSelectMusicName(name);
+    };
     
 
     useEffect(() => {
@@ -47,11 +52,11 @@ const homepage = () => {
         <div className="flex flex-col w-full max-w-screen-lg mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10 py-6 md:py-12 lg:pb-8 lg:pt-10">
             {allMusics.map((music) => (
-              <MusicCard key={music.trackId} music={music} />
+              <MusicCard key={music.trackId} music={music} isSelected={selectMusicName === music.title} onSelectMusic={handleMusic}/>
             ))}
           </div>
         </div>
-        <Musicfooter/>
+        {/* <Musicfooter selectMusicName={selectMusicName}/> */}
       </main>      
     );
   };
